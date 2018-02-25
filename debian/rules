@@ -1,0 +1,19 @@
+#!/usr/bin/make -f
+
+VER=$(shell dpkg-parsechangelog --show-field Version)
+REL=$(shell lsb_release -rsu || lsb_release -rs)
+CDN=$(shell lsb_release -csu || lsb_release -cs)
+DID=$(shell (lsb_release -isu || lsb_release -is) | tr '[:upper:]' '[:lower:]')
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	echo "deb http://pkg.baltnet.net/$(DID) $(CDN) main" > src/baltnet.list
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -f src/baltnet.list
+
+override_dh_gencontrol:
+	dh_gencontrol -- -v$(VER)+$(REL)-$(CDN)

@@ -1,0 +1,2 @@
+src/baltnet.gpg etc/apt/trusted.gpg.d/
+src/baltnet.list etc/apt/sources.list.d/
